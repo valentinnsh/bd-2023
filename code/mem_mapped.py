@@ -1,44 +1,92 @@
 import mmap
 import os
+from timeit import default_timer
+import random
+from contextlib import contextmanager
 
 import numpy as np
 
+@contextmanager
+def temp_file(f_name: str, num_words: int=100):
+    """
+    Контекстный менеджер - создает файл, заполняет его случайными словами, удаляет за собой
+    """  
+    alpha = [chr(ch) for ch in range(ord('a'), ord('z')+1)]    
 
-def intro():
-    f_name = 'file.txt'
-    
-    with open(f_name, 'r+b') as f:
-        with mmap.mmap(f.fileno(), length=0, offset=0, access=mmap.ACCESS_WRITE) as mm:
-            print(mm[:5])
-            mm[:1] = b'B'
+    try:
+        with open(f_name, "w") as f:
+            for _ in range(num_words):
+                random_word = ''.join(random.choices(alpha, k=random.randint(2, 10)))
+                f.write(random_word)
+                f.write(" ")
 
-
-def simple():
-    # имя файла для отображения
-    f_name = 'file_for_memmap.txt'
-    try:    
-        # заполняем его строками       
-        with open(f_name, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(['Hello World'] * 1000))
-
-        # отображаем файл на память
-        with open(f_name, 'r+b') as f:
-            with mmap.mmap(f.fileno(), length=1000, offset=0, access=mmap.ACCESS_WRITE) as mm:
-                print(mm[:20])
-                mm[:5] = b'12345'
-
-        # проверяем изменения
-        with open(f_name, 'r', encoding='utf-8') as f:
-            print(f.readline())
-    finally:
-        #Удалям файл
+        yield f_name            
+    finally:        
         os.remove(f_name)
 
 
+def read_file(f_name: str, num_first_symbols: int=10) -> str:    
+    """
+    Читает содержимое текстового файла и возвращает первые `num_first_symbols` символов
+    """
+    with open(f_name, "r") as f:
+        return f.read(num_first_symbols)
+
+
+@contextmanager
+def timer():
+    """
+    Контекстный менеджер - замеряет время работы кода
+    """  
+    start = default_timer()
+    yield 
+    end = default_timer()
+    print(f"Time: {end-start}")
+    return end - start
+
+
+def intro():
+    """
+    Первый пример: создание файла и изменения его через mmap
+    """
+    with temp_file("/tmp/hello.txt") as file_name:
+        print(f"Before: {read_file(file_name)}")
+        with open(file_name, "r+b") as f:    
+            with mmap.mmap(f.fileno(), offset=0, length=0, access=mmap.ACCESS_WRITE) as mm:          
+                mm[:2] = b"BB"
+                print(f"Memory: {mm[:10]}")            
+        
+        print(f"After: {read_file(file_name)}")
+
+
+def performance():       
+    """
+    Сравнение производительности чтения файла в буфер обычным образом и через mmap
+    """
+    def perf_open(f_name: str) -> int:
+        with open(f_name, "rb") as f:
+            content = f.read()
+            return content[:20] + content[-20:]            
+
+    def perf_mmap(f_name: str) -> int:
+        with open(f_name, "r+b") as f:
+            with mmap.mmap(f.fileno(), offset=0, length=0, access=mmap.ACCESS_READ) as mm:
+                return mm[:20] + mm[-20:]                
+                  
+    with temp_file("/tmp/hello.txt", 1000_000) as file_name:
+        with timer():
+            perf_open(file_name)
+        with timer():
+            perf_mmap(file_name)        
+
+
 def numpy_mapping():
+    """
+    Пример использования numpy
+    """
     # имя файла для отображения
     f_name = 'file_for_memmap.txt'
-    try:    
+    with temp_file("/tmp/hello.txt") as f_name:   
         # записываем туда бинарное представление массива numpy      
         with open(f_name, 'wb') as f:
             arr = np.arange(0, 100, dtype=np.int64)            
@@ -50,11 +98,10 @@ def numpy_mapping():
                # восстанавливаем массив
                arr = np.frombuffer(mm, dtype=np.int64)
                print(arr)  
-    finally:
-        #Удалям файл
-        os.remove(f_name)
+               del arr
+   
 
 if __name__ == '__main__':
     intro()
-    simple()
+    performance()    
     numpy_mapping()
