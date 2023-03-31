@@ -54,7 +54,7 @@ def intro():
         with open(file_name, "r+b") as f:    
             with mmap.mmap(f.fileno(), offset=0, length=0, access=mmap.ACCESS_WRITE) as mm:          
                 mm[:2] = b"BB"
-                print(f"Memory: {mm[:10]}")            
+                print(f"Memory: {mm[:10]}")                            
         
         print(f"After: {read_file(file_name)}")
 
@@ -71,7 +71,7 @@ def performance():
     def perf_mmap(f_name: str) -> int:
         with open(f_name, "r+b") as f:
             with mmap.mmap(f.fileno(), offset=0, length=0, access=mmap.ACCESS_READ) as mm:
-                return mm[:20] + mm[-20:]                
+                return mm[:20] + mm[-20:]
                   
     with temp_file("/tmp/hello.txt", 1000_000) as file_name:
         with timer():
@@ -102,6 +102,6 @@ def numpy_mapping():
    
 
 if __name__ == '__main__':
-    intro()
-    performance()    
+    #intro()
+    # performance()    
     numpy_mapping()

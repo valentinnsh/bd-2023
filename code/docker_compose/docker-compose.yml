@@ -6,12 +6,21 @@ services:
     container_name: elasticsearch
     environment:      
       - discovery.type=single-node    
-   # volumes:
-   #   - ./data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
     
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      - MYSQL_USER=user1
+      - MYSQL_PASSWORD=password1
+      - MYSQL_DATABASE=mydb
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 3306:3306
+
   web:
     build: .
     working_dir: /
@@ -20,6 +29,6 @@ services:
     volumes:
       - './app:/app'   
     ports:
-      - '8989:8989'
+      - '8990:8989'
 
   

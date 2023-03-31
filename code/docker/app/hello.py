@@ -11,12 +11,11 @@ def home():
                  <title>Hello from Docker</title>
                  <body>
                      <h3>Hello from Docker</h3>
-                     asassas
                  </body>
               </html>
      """
-    #return Response(html, mimetype='text/html')
+    return Response(html, mimetype='text/html')
     
-    return "Hello from Docker!!!"
+    #return "Hello from Docker!!!"
  
 app.run('0.0.0.0', port=8989, debug=True)
