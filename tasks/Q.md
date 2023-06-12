@@ -16,3 +16,36 @@
 15. Локальная работа с большими данными. `Apache Arrow`, `SQLite`, `DuckDB`. Взаимодействие с `Pandas`.
 16. Распределенные системы и согласованность данных в распределенных системах: "теорема" CAP. Strong, Sequential, Eventual Consistency. 
 17. Алгоритмы консенсуса в распределенных системах. `Paxos` и `Raft`.
+
+
+## Литература:
+1. https://assets.bitbashing.io/papers/concurrency-primer.pdf (Q1, Q2, Q3)
+2. https://docs.docker.com/get-started/ (Q4, Q5)
+3. https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ (Q5, Q6)
+4. https://github.com/heathermiller/dist-prog-book (Q1, Q2, Q3, Q6)
+5. https://docs.python.org/3/library/multiprocessing.html (Q3)
+6. https://docs.python.org/3/library/concurrent.futures.html (Q3)
+7. http://greenteapress.com/semaphores/LittleBookOfSemaphores.pdf (Q3)
+8. https://hadoop.apache.org/docs/current/hdfs_design.html (Q8)
+9. https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html (Q8)
+10. https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html (Q9)
+11. https://zookeeper.apache.org/doc/current/zookeeperStarted.html (Q11)
+12. https://hive.apache.org/ (Q10)
+13. https://hbase.apache.org/ (Q10)
+14. https://spark.apache.org/ (Q12, Q13)
+15. https://spark.apache.org/sql/ (Q12, Q13)
+16. https://dask.org (Q14)
+17. https://ray.io (Q14)
+18. https://arrow.apache.org (Q15)
+19. https://arrow.apache.org/docs/python/index.html (Q15)
+20. https://duckdb.org/docs/guides/python/install (Q15)
+21. https://en.wikipedia.org/wiki/Consistency_model (Q16)
+22. https://xzhu0027.gitbook.io/blog/misc/index/consistency-models-in-distributed-system (Q16, Q17)
+23. https://jepsen.io/consistency (Q16)
+24. https://en.wikipedia.org/wiki/Paxos_(computer_science) (Q17)
+25. https://raft.github.io/ (Q17)
+26. https://raft.github.io/raft.pdf (Q17)
+27. https://en.wikipedia.org/wiki/Paxos_(computer_science) (Q17)
+
+Data:
+https://drive.google.com/file/d/1XQDEPEQxJQgnmLX3idlsh-WDTnj0y7ul/view
