@@ -20,3 +20,8 @@ target/
 .DS_Store
 Thumbs.db
 *.log
+/tasks/task1/btest
+/tasks/task1/numbers
+/tasks/task1/small
+/tasks/task1/test
+/tasks/task2/numbers
